@@ -1,0 +1,17 @@
+type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            "message": message,
+            "sender": USER_ID
+        }),
+        success: function (data, textStatus) {
+            if (data != null) {
+                setBotResponse(data);
+            }
+            console.log("Rasa Response: ", data, "\n Status:", textStatus)
+        },
+        error: function (errorMessage) {
+            setBotResponse("");
+            console.log('Error' + errorMessage);
+
+        }
