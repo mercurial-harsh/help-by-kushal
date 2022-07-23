@@ -1,132 +1,107 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Alert } from "@mui/material";
-import { ButtonGroup, Button } from "@mui/material";
+import { ButtonGroup } from "@mui/material";
 
+function Botcard({ message, handleSubmit }) {
+  const [stateSet, setStateSet] = useState(false);
+  const [messageAlert, setMessageAlert] = useState(false);
+  const [isDisable, setIsDisable] = useState(false);
 
-function Botcard({ message }) {
-
-  const [stateset, setStateset] = useState(false);
-  const [messagealert, setMessagealert] = useState(false);
-  const [textmsg, setTextmsg] = useState('');
-  const [buttonvalues, setButtonvalues] = useState(false);
-  const [gallery, setGallery] = useState(null);
-
-  const [buttonsarraycomponent,setButtonsarraycomponent] = useState([]);
-
-
-
-
-
-  (() => {
-
-    if (!stateset) {
-      if (Object.keys(message).length < 1) {
-        setMessagealert(true);
-      }
-      else {
-        if ((message.response[0].hasOwnProperty("text"))) {
-          setTextmsg(message.response[0].text)
-        }
-        if ((message.response[0].hasOwnProperty("image"))) {
-          setGallery(message.response[0].image)
-        }
-        if ((message.response[0].hasOwnProperty("buttons"))) {
-          if(!buttonvalues){
-            const buttonsarray = message.response[0].buttons;
-          let i = 0;
-          buttonsarray.forEach(element => {
-            setButtonsarraycomponent(old=>[...old,{id:i,payload:element.payload,title:element.title}]); i++;
-
-          });
-
-          
-
-          
-          setButtonvalues(true);
+  useEffect(() => {
+    if (!stateSet) {
+      if (message.response.length > 0) {
+        message.response.forEach((data) => {
+          if (data.buttons) {
+            setIsDisable(false);
           }
-          
-          
-
-
-
-        }
-
-
+        });
+        setStateSet(true);
+      } else {
+        setMessageAlert(true);
       }
-      setStateset(true);
     }
+  }, [message, stateSet]);
 
-
-
-
-
-  })();
-
-
-
-
-
+  const handleButton = (e) => {
+    setIsDisable(true);
+    handleSubmit(e);
+  };
 
   return (
-
     <React.Fragment>
+      {messageAlert && (
+        <Alert severity="error">Either No Connection or No Response</Alert>
+      )}
+      {message.response.length > 0 &&
+        message.response.map(({ text, buttons, image }, index) => (
+          <React.Fragment key={index}>
+            {text && (
+              <div className="d-flex flex-row justify-content-start mt-3">
+                <img
+                  src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
+                  alt="avatar 1"
+                  style={{ width: "45px", height: "100%" }}
+                ></img>
+                <div>
+                  <p
+                    className="small p-2 ms-3 mb-1 rounded-3"
+                    style={{ backgroundColor: "#f5f6f7" }}
+                  >
+                    {text}
+                  </p>
 
+                  <p className="small ms-3 mb-3 rounded-3 text-muted">23:58</p>
+                </div>
+              </div>
+            )}
+            {image && (
+              <div className="d-flex flex-row justify-content-start mt-3">
+                <img
+                  src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
+                  alt="avatar 1"
+                  style={{ width: "45px", height: "100%" }}
+                ></img>
+                <div>
+                  <p
+                    className="small p-2 ms-3 mb-1 rounded-3"
+                    style={{ backgroundColor: "#f5f6f7" }}
+                  >
+                    <img src={image} alt="product-gallery"></img>
+                  </p>
 
-      {
-        (messagealert && stateset) ? <Alert severity="error">Either No Connection or No Response</Alert> : null
-      }
-      {(textmsg && stateset) ?
-        <div className="d-flex flex-row justify-content-start">
-          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
-            alt="avatar 1" style={{ width: '45px', height: '100%' }}></img>
-          <div>
-            <p className="small p-2 ms-3 mb-1 rounded-3" style={{ backgroundColor: '#f5f6f7' }}>{textmsg}</p>
-
-            <p className="small ms-3 mb-3 rounded-3 text-muted">23:58</p>
-          </div>
-        </div> : null
-      }
-      {(gallery && stateset) ?
-        <div className="d-flex flex-row justify-content-start">
-          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
-            alt="avatar 1" style={{ width: '45px', height: '100%' }}></img>
-          <div>
-            <p className="small p-2 ms-3 mb-1 rounded-3" style={{ backgroundColor: '#f5f6f7' }}>
-              <img src={gallery} alt="product-gallery"></img>
-
-            </p>
-
-            <p className="small ms-3 mb-3 rounded-3 text-muted">23:58</p>
-          </div>
-        </div> : null
-      }
-      {(buttonvalues && buttonsarraycomponent&&stateset) ?
-        <div className="d-flex flex-row justify-content-start">
-          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
-            alt="avatar 1" style={{ width: '45px', height: '100%' }}></img>
-          <div>
-          <ButtonGroup>
-          {buttonsarraycomponent.map(({ payload, title, id },index) => (
-              <button key={index} value={payload}> {title} </button>
-          ))}
-
-
-
-          </ButtonGroup>
-            
-          
-            
-          </div>
-        </div> : null
-      }
-
+                  <p className="small ms-3 mb-3 rounded-3 text-muted">23:58</p>
+                </div>
+              </div>
+            )}
+            {buttons?.length > 0 && (
+              <div className="d-flex flex-row justify-content-start mt-3">
+                <img
+                  src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
+                  alt="avatar 1"
+                  style={{ width: "45px", height: "100%" }}
+                ></img>
+                <div>
+                  <ButtonGroup>
+                    {buttons.map(({ payload, title }, index) => (
+                      <button
+                        key={index}
+                        value={payload}
+                        onClick={(e) => handleButton(e)}
+                        disabled={isDisable}
+                      >
+                        {" "}
+                        {title}{" "}
+                      </button>
+                    ))}
+                  </ButtonGroup>
+                </div>
+              </div>
+            )}
+          </React.Fragment>
+        ))}
     </React.Fragment>
-  )
-
-
-
-
+  );
 }
 
 export default Botcard;
