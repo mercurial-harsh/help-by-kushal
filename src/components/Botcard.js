@@ -82,7 +82,11 @@ function Botcard({ message, handleSubmit }) {
                   style={{ width: "45px", height: "100%" }}
                 ></img>
                 <div>
-                  <ButtonGroup>
+                  <ButtonGroup
+                   orientation="vertical"
+                   aria-label="vertical contained button group"
+                   variant="contained"
+                  >
                     {buttons.map(({ payload, title }, index) => (
                       <button
                         key={index}
