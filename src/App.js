@@ -2,10 +2,14 @@ import { LinearProgress } from "@mui/material";
 import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import Botcard from "./components/Botcard";
+
 import Usercard from "./components/Usercard";
 import uuidv4 from "./utils/utility";
 
+
 function App() {
+
+
   const [userId, setUserId] = useState("");
   const [chat, setChat] = useState([]);
   const [inputMessage, setInputMessage] = useState("");

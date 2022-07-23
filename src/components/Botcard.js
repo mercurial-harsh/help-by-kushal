@@ -1,7 +1,13 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Alert } from "@mui/material";
-import { ButtonGroup } from "@mui/material";
+import { ButtonGroup,Button } from "@mui/material";
+import moment from "moment";
+
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+
+import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
+import MediaCard from "./Mediacard";
 
 function Botcard({ message, handleSubmit }) {
   const [stateSet, setStateSet] = useState(false);
@@ -51,7 +57,7 @@ function Botcard({ message, handleSubmit }) {
                     {text}
                   </p>
 
-                  <p className="small ms-3 mb-3 rounded-3 text-muted">23:58</p>
+                  <p className="small ms-3 mb-3 rounded-3 text-muted">{moment().format("LT")}</p>
                 </div>
               </div>
             )}
@@ -67,7 +73,7 @@ function Botcard({ message, handleSubmit }) {
                     className="small p-2 ms-3 mb-1 rounded-3"
                     style={{ backgroundColor: "#f5f6f7" }}
                   >
-                    <img src={image} alt="product-gallery"></img>
+                    <MediaCard src={image}></MediaCard>
                   </p>
 
                   <p className="small ms-3 mb-3 rounded-3 text-muted">23:58</p>
@@ -88,7 +94,7 @@ function Botcard({ message, handleSubmit }) {
                    variant="contained"
                   >
                     {buttons.map(({ payload, title }, index) => (
-                      <button
+                      <Button
                         key={index}
                         value={payload}
                         onClick={(e) => handleButton(e)}
@@ -96,7 +102,7 @@ function Botcard({ message, handleSubmit }) {
                       >
                         {" "}
                         {title}{" "}
-                      </button>
+                      </Button>
                     ))}
                   </ButtonGroup>
                 </div>
@@ -104,6 +110,10 @@ function Botcard({ message, handleSubmit }) {
             )}
           </React.Fragment>
         ))}
+        <div flex>
+        <SentimentVeryDissatisfiedIcon color='error'></SentimentVeryDissatisfiedIcon>
+        <SentimentVerySatisfiedIcon color='success'></SentimentVerySatisfiedIcon>
+        </div>
     </React.Fragment>
   );
 }

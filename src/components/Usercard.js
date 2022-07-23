@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 
 function Usercard(props) {
   return (
@@ -9,7 +10,7 @@ function Usercard(props) {
             {props.message}
           </p>
           <p className="small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end">
-            00:06
+          {moment().format("LT")}
           </p>
         </div>
         <img
