@@ -2,19 +2,68 @@ import { LinearProgress } from "@mui/material";
 import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import Botcard from "./components/Botcard";
-
 import Usercard from "./components/Usercard";
 import uuidv4 from "./utils/utility";
-
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 
 function App() {
-
-
   const [userId, setUserId] = useState("");
   const [chat, setChat] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const [botTyping, setbotTyping] = useState(false);
   const listItems = useRef(null);
+  const [listen, setListen] = useState(false);
+  // const [chatMessages, setChatMessages] = useState([]);
+  const [timer, setTimer] = useState(null);
+
+  const commands = [
+    {
+      command: "Start",
+      callback: (command) => {
+        console.log("Start recognized");
+        setListen(true);
+        resetTranscript();
+      },
+      fuzzyMatchingThreshold: 0.6,
+      isFuzzyMatch: true,
+      matchInterim: true,
+    },
+    {
+      command: "clear",
+      callback: (command) => {
+        console.log("Clear triggered");
+        resetTranscript();
+      },
+      fuzzyMatchingThreshold: 0.6,
+      isFuzzyMatch: true,
+      matchInterim: true,
+    },
+  ];
+
+  const { transcript, listening, finalTranscript, resetTranscript } =
+    useSpeechRecognition({
+      commands,
+    });
+
+  const startListening = () =>
+    SpeechRecognition.startListening({ continuous: true });
+
+  useEffect(() => {
+    SpeechRecognition.startListening({ continuous: true });
+  }, []);
+
+  useEffect(() => {
+    console.log(transcript);
+
+    if (!listen) return;
+
+    clearTimeout(timer);
+
+    const newTimer = setTimeout(() => voiceSubmit(finalTranscript), 3000);
+    setTimer(newTimer);
+  }, [transcript, finalTranscript, listen]);
 
   useEffect(() => {
     if (!userId) {
@@ -36,6 +85,26 @@ function App() {
       rasaAPI(userId, "Hi");
     }
   }, [userId, mount]);
+
+  const voiceSubmit = (transcript) => {
+    const request_temp = {
+      senderType: "user",
+      sender_id: userId,
+      msg: transcript,
+    };
+    
+    if (transcript !== "") {
+      setChat((prevState) => [...prevState, request_temp]);
+      setbotTyping(true);
+      
+      
+      rasaAPI(userId, transcript);
+      setListen(false);
+      // resetTranscript();
+    } else {
+      window.alert("sorry your stream was empty");
+    }
+  };
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -87,6 +156,16 @@ function App() {
               {/* <!-- Buttons trigger collapse --> */}
               <a
                 className="btn btn-info btn-lg btn-block"
+                aria-expanded="false"
+              >
+                <div className="d-flex justify-content-between align-items-center">
+                  <span>
+                    Speak START to query, CLEAR for dismissing incorrect speech
+                  </span>
+                </div>
+              </a>
+              <a
+                className="btn btn-info btn-lg btn-block"
                 data-mdb-toggle="collapse"
                 href="#collapseExample"
                 role="button"
@@ -94,7 +173,7 @@ function App() {
                 aria-controls="collapseExample"
               >
                 <div className="d-flex justify-content-between align-items-center">
-                  <span>Talk to V-AI-SHALLY</span>
+                  <span>Talk to VAISHALLY</span>
                   <i className="fas fa-chevron-down"></i>
                 </div>
               </a>
@@ -129,16 +208,11 @@ function App() {
                       );
                     })}
                   </div>
-                  {/* divider for signifiying today */}
-                  {/* <div className="divider d-flex align-items-center mb-4">
-                    <p
-                      className="text-center mx-3 mb-0"
-                      style={{ color: "#a2aab7" }}
-                    >
-                      Today
-                    </p>
-                  </div> */}
+
                   <div className="card-footer text-muted d-flex justify-content-start align-items-center p-3">
+                    {listen && (
+                      <div className="mask mask-custom">{transcript}</div>
+                    )}
                     <img
                       src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
                       alt="avatar 3"
@@ -154,10 +228,9 @@ function App() {
                       placeholder="Type message"
                     ></input>
                     <a className="ms-1 link-info" href="#!">
-                      <i className="fas fa-microphone"></i>
-                    </a>
-                    <a className="ms-3 text-muted" href="#!">
-                      <i className="fas fa-smile"></i>
+                      <i className="fas fa-microphone">
+                        {listening ? "On" : "Off"}
+                      </i>
                     </a>
                     <a className="ms-3 link-info" href="#!">
                       <i

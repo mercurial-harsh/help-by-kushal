@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Alert } from "@mui/material";
-import { ButtonGroup,Button } from "@mui/material";
+import { ButtonGroup, Button } from "@mui/material";
 import moment from "moment";
 
-import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 
-import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
+import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
 import MediaCard from "./Mediacard";
+import speak from "../utils/speechsynthesis";
 
 function Botcard({ message, handleSubmit }) {
   const [stateSet, setStateSet] = useState(false);
@@ -20,6 +21,9 @@ function Botcard({ message, handleSubmit }) {
         message.response.forEach((data) => {
           if (data.buttons) {
             setIsDisable(false);
+            speak(
+              "please select from the list of these products or say first , second in voiceprompt"
+            );
           }
         });
         setStateSet(true);
@@ -57,7 +61,9 @@ function Botcard({ message, handleSubmit }) {
                     {text}
                   </p>
 
-                  <p className="small ms-3 mb-3 rounded-3 text-muted">{moment().format("LT")}</p>
+                  <p className="small ms-3 mb-3 rounded-3 text-muted">
+                    {moment().format("LT")}
+                  </p>
                 </div>
               </div>
             )}
@@ -89,9 +95,9 @@ function Botcard({ message, handleSubmit }) {
                 ></img>
                 <div>
                   <ButtonGroup
-                   orientation="vertical"
-                   aria-label="vertical contained button group"
-                   variant="contained"
+                    orientation="vertical"
+                    aria-label="vertical contained button group"
+                    variant="contained"
                   >
                     {buttons.map(({ payload, title }, index) => (
                       <Button
@@ -110,10 +116,10 @@ function Botcard({ message, handleSubmit }) {
             )}
           </React.Fragment>
         ))}
-        <div flex>
-        <SentimentVeryDissatisfiedIcon color='error'></SentimentVeryDissatisfiedIcon>
-        <SentimentVerySatisfiedIcon color='success'></SentimentVerySatisfiedIcon>
-        </div>
+      <div>
+        <SentimentVeryDissatisfiedIcon color="error"></SentimentVeryDissatisfiedIcon>
+        <SentimentVerySatisfiedIcon color="success"></SentimentVerySatisfiedIcon>
+      </div>
     </React.Fragment>
   );
 }
