@@ -8,7 +8,7 @@ import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDiss
 
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
 import MediaCard from "./Mediacard";
-import speak from "../utils/speechsynthesis";
+import { speak } from "../utils/speechsynthesis";
 
 function Botcard({ message, handleSubmit }) {
   const [stateSet, setStateSet] = useState(false);

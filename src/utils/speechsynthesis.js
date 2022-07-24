@@ -1,4 +1,4 @@
-const speak = async (text) => {
+export const speak = async (text) => {
   if (!speechSynthesis) {
     return;
   }
@@ -31,5 +31,3 @@ const chooseVoice = async () => {
     resolve(voices[0]);
   });
 };
-
-export default speak();
