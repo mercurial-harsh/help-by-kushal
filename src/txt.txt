@@ -1,17 +1,18 @@
-type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({
-            "message": message,
-            "sender": USER_ID
-        }),
-        success: function (data, textStatus) {
-            if (data != null) {
-                setBotResponse(data);
-            }
-            console.log("Rasa Response: ", data, "\n Status:", textStatus)
-        },
-        error: function (errorMessage) {
-            setBotResponse("");
-            console.log('Error' + errorMessage);
+  useEffect(() => {
+    const keyDownHandler = (event) => {
+      if (event.key === "Enter") {
+        // 👇️ call submit function here
+        setInputMessage(event.target.value);
+        handleSubmit();
+      }
+    };
 
-        }
+    document
+      .getElementById("exampleFormControlInput3")
+      .addEventListener("keydown", keyDownHandler);
+    return () => {
+      document
+        .getElementById("exampleFormControlInput3")
+        .removeEventListener("keydown", keyDownHandler);
+    };
+  }, []);

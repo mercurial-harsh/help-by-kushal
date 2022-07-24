@@ -47,16 +47,11 @@ function App() {
       commands,
     });
 
-  const startListening = () =>
-    SpeechRecognition.startListening({ continuous: true });
-
   useEffect(() => {
     SpeechRecognition.startListening({ continuous: true });
   }, []);
 
   useEffect(() => {
-    console.log(transcript);
-
     if (!listen) return;
 
     clearTimeout(timer);
@@ -92,12 +87,11 @@ function App() {
       sender_id: userId,
       msg: transcript,
     };
-    
+
     if (transcript !== "") {
       setChat((prevState) => [...prevState, request_temp]);
       setbotTyping(true);
-      
-      
+
       rasaAPI(userId, transcript);
       setListen(false);
       // resetTranscript();
@@ -106,9 +100,30 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    const keyDownHandler = (event) => {
+      if (event.key === "Enter") {
+        // 👇️ call submit function here
+        setInputMessage(event.target.value);
+        handleSubmit(event);
+      }
+    };
+
+    document
+      .getElementById("exampleFormControlInput3")
+      .addEventListener("keydown", keyDownHandler);
+    return () => {
+      document
+        .getElementById("exampleFormControlInput3")
+        .removeEventListener("keydown", keyDownHandler);
+    };
+  }, []);
+
   const handleSubmit = (evt) => {
     evt.preventDefault();
+
     const { value } = evt.target;
+
     const request_temp = {
       senderType: "user",
       sender_id: userId,
@@ -117,6 +132,7 @@ function App() {
     setInputMessage(value);
     if (inputMessage !== "" || value) {
       setChat((prevState) => [...prevState, request_temp]);
+      console.log(chat)
       setbotTyping(true);
       setInputMessage("");
       rasaAPI(userId, value || inputMessage);
