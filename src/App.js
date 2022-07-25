@@ -26,6 +26,7 @@ function App() {
       callback: (command) => {
         console.log("Start recognized");
         setListen(true);
+        speechSynthesis.cancel();
         resetTranscript();
       },
       fuzzyMatchingThreshold: 0.6,
@@ -111,7 +112,7 @@ function App() {
       if (event.key === "Enter") {
         // 👇️ call submit function here
         voiceSubmit(event.target.value);
-        setInputMessage("")
+        setInputMessage("");
       }
     };
 
