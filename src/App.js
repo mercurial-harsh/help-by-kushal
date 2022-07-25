@@ -7,6 +7,7 @@ import uuidv4 from "./utils/utility";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import { speak } from "./utils/speechsynthesis";
 
 function App() {
   const [userId, setUserId] = useState("");
@@ -96,7 +97,10 @@ function App() {
       setListen(false);
       // resetTranscript();
     } else {
-      window.alert("sorry your stream was empty");
+      speak("sorry I didnt hear anything from you");
+      document.getElementById("failsafe").innerText =
+        "sorry I didnt hear anything from you";
+      setTimeout(setListen(false), 1000);
     }
   };
 
@@ -132,7 +136,7 @@ function App() {
     setInputMessage(value);
     if (inputMessage !== "" || value) {
       setChat((prevState) => [...prevState, request_temp]);
-      console.log(chat)
+      console.log(chat);
       setbotTyping(true);
       setInputMessage("");
       rasaAPI(userId, value || inputMessage);
@@ -176,7 +180,8 @@ function App() {
               >
                 <div className="d-flex justify-content-between align-items-center">
                   <span>
-                    Speak START to query, CLEAR for dismissing incorrect speech
+                    Say <span style={{ color: "red" }}> *START* </span>to Speak,{" "}
+                    <span style={{ color: "red" }}> *CLEAR* </span> to Retry
                   </span>
                 </div>
               </a>
@@ -189,7 +194,7 @@ function App() {
                 aria-controls="collapseExample"
               >
                 <div className="d-flex justify-content-between align-items-center">
-                  <span>Talk to VAISHALLY</span>
+                  <span>Click to Talk to VAISHALLY</span>
                   <i className="fas fa-chevron-down"></i>
                 </div>
               </a>
@@ -227,7 +232,11 @@ function App() {
 
                   <div className="card-footer text-muted d-flex justify-content-start align-items-center p-3">
                     {listen && (
-                      <div className="mask mask-custom">{transcript}</div>
+                      <div className="mask mask-custom">
+                        <span style={{ color: "white" }}>
+                          <h1 id="failsafe">{transcript}</h1>
+                        </span>
+                      </div>
                     )}
                     <img
                       src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp"
@@ -244,9 +253,10 @@ function App() {
                       placeholder="Type message"
                     ></input>
                     <a className="ms-1 link-info" href="#!">
-                      <i className="fas fa-microphone">
-                        {listening ? "On" : "Off"}
-                      </i>
+                      <i
+                        className="fas fa-microphone"
+                        style={{ color: "red" }}
+                      ></i>
                     </a>
                     <a className="ms-3 link-info" href="#!">
                       <i

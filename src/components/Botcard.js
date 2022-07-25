@@ -19,11 +19,21 @@ function Botcard({ message, handleSubmit }) {
     if (!stateSet) {
       if (message.response.length > 0) {
         message.response.forEach((data) => {
+          if (data.text) {
+            const textmsg = data.text;
+            if (!textmsg.startsWith("You may select any product")) {
+              speak(textmsg);
+            }
+          }
           if (data.buttons) {
             setIsDisable(false);
-            speak(
-              "please select from the list of these products or say first , second in voiceprompt"
-            );
+
+            let textmsg =
+              "please click to select from the list of these " +
+              data.buttons.length +
+              " items or, you can also say first, second, third ";
+
+            speak(textmsg);
           }
         });
         setStateSet(true);
