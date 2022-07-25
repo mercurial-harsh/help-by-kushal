@@ -7,7 +7,7 @@ import uuidv4 from "./utils/utility";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-import { speak,chooseVoice } from "./utils/speechsynthesis";
+import { speak, chooseVoice } from "./utils/speechsynthesis";
 
 function App() {
   const [userId, setUserId] = useState("");
@@ -22,7 +22,7 @@ function App() {
 
   const commands = [
     {
-      command: "Vaishali",
+      command: "Start",
       callback: (command) => {
         console.log("Start recognized");
         setListen(true);
@@ -67,7 +67,7 @@ function App() {
       setUserId(uuidv4);
       chooseVoice("Veena");
     }
-  }, [userId,chooseVoice()]);
+  }, [userId, chooseVoice()]);
 
   useEffect(() => {
     const lastItem = listItems.current.lastElementChild;
@@ -170,7 +170,7 @@ function App() {
 
   return (
     <div>
-      <section style={{ backgroundColor: "#eee" }}>
+      <section class="gradient-custom">
         <div className="container py-5" style={{ height: "100vh" }}>
           <div className="row d-flex justify-content-center">
             <div className="col-md-8 col-lg-6 col-xl-4">
@@ -181,8 +181,8 @@ function App() {
               >
                 <div className="d-flex justify-content-between align-items-center">
                   <span>
-                    Say <span style={{ color: "red" }}> "VAISHALI" </span>to Speak,{" "}
-                    <span style={{ color: "red" }}> *CLEAR* </span> to Retry
+                    Say <span style={{ color: "red" }}> "START" </span>to Speak,{" "}
+                    <span style={{ color: "red" }}> "CLEAR" </span> to Retry
                   </span>
                 </div>
               </a>
@@ -193,10 +193,21 @@ function App() {
                 role="button"
                 aria-expanded="false"
                 aria-controls="collapseExample"
-                onClick={()=>setVisible(true)}
+                onClick={() => setVisible(true)}
               >
-                <div className="d-flex justify-content-between align-items-center">
-                  <span>Click to Talk to VAISHALLY</span>
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                  id="gradientglass"
+                >
+                  <span>
+                    <p style={{ fontVariant: "normal" }}>
+                      Welcome to the World of{" "}
+                      <span style={{ fontSize: "15px", color: "red" }}>
+                        Conversational AI
+                      </span>{" "}
+                      (Click to Start)
+                    </p>
+                  </span>
                   <i className="fas fa-chevron-down"></i>
                 </div>
               </a>
