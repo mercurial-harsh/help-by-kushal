@@ -7,7 +7,7 @@ import uuidv4 from "./utils/utility";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-import { speak } from "./utils/speechsynthesis";
+import { speak,chooseVoice } from "./utils/speechsynthesis";
 
 function App() {
   const [userId, setUserId] = useState("");
@@ -22,7 +22,7 @@ function App() {
 
   const commands = [
     {
-      command: "Start",
+      command: "Vaishali",
       callback: (command) => {
         console.log("Start recognized");
         setListen(true);
@@ -65,8 +65,9 @@ function App() {
   useEffect(() => {
     if (!userId) {
       setUserId(uuidv4);
+      chooseVoice("Veena");
     }
-  }, [userId]);
+  }, [userId,chooseVoice()]);
 
   useEffect(() => {
     const lastItem = listItems.current.lastElementChild;
@@ -180,7 +181,7 @@ function App() {
               >
                 <div className="d-flex justify-content-between align-items-center">
                   <span>
-                    Say <span style={{ color: "red" }}> *START* </span>to Speak,{" "}
+                    Say <span style={{ color: "red" }}> "VAISHALI" </span>to Speak,{" "}
                     <span style={{ color: "red" }}> *CLEAR* </span> to Retry
                   </span>
                 </div>

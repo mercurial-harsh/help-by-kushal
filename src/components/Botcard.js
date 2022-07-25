@@ -31,7 +31,7 @@ function Botcard({ message, handleSubmit }) {
             let textmsg =
               "please click to select from the list of these " +
               data.buttons.length +
-              ' items or, you can also say first, second, third. . .       Say "START" to Speak and or "CANCEL" to retry.';
+              ' items or, you can also say first, second, third. . .       Say, "VAISHAALI".. to Speak, or "CLEAR", to retry.';
 
             speak(textmsg);
           }

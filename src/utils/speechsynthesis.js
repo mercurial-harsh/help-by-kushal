@@ -31,7 +31,7 @@ const getVoices = () => {
   });
 };
 
-const chooseVoice = async (voicepref) => {
+export const chooseVoice = async (voicepref) => {
   const voices = (await getVoices()).filter(
     (voice) => voice.name === voicepref
 
