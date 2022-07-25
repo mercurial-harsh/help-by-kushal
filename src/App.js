@@ -111,6 +111,7 @@ function App() {
       if (event.key === "Enter") {
         // 👇️ call submit function here
         voiceSubmit(event.target.value);
+        setInputMessage("")
       }
     };
 
@@ -202,7 +203,7 @@ function App() {
                   <span>
                     <p style={{ fontVariant: "normal" }}>
                       Welcome to the World of{" "}
-                      <span style={{ fontSize: "15px", color: "red" }}>
+                      <span style={{ fontSize: "15px", color: "#200baa" }}>
                         Conversational AI
                       </span>{" "}
                       (Click to Start)
