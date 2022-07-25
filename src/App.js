@@ -59,7 +59,10 @@ function App() {
 
     clearTimeout(timer);
 
-    const newTimer = setTimeout(() => voiceSubmit(finalTranscript), 3000);
+    const newTimer = setTimeout(
+      () => voiceSubmit(finalTranscript, userId),
+      3000
+    );
     setTimer(newTimer);
   }, [transcript, finalTranscript, listen]);
 
@@ -85,7 +88,7 @@ function App() {
     }
   }, [userId, visible]);
 
-  const voiceSubmit = (transcript) => {
+  const voiceSubmit = (transcript, userId) => {
     const request_temp = {
       senderType: "user",
       sender_id: userId,
@@ -107,11 +110,28 @@ function App() {
     }
   };
 
+  const enterSubmit = (message, userId) => {
+    const request_temp = {
+      senderType: "user",
+      sender_id: userId,
+      msg: message,
+    };
+
+    if (message !== "") {
+      setChat((prevState) => [...prevState, request_temp]);
+      setbotTyping(true);
+      console.log(userId);
+      rasaAPI(userId, message);
+      setListen(false);
+      // resetTranscript();
+    }
+  };
+
   useEffect(() => {
     const keyDownHandler = (event) => {
       if (event.key === "Enter") {
         // 👇️ call submit function here
-        voiceSubmit(event.target.value);
+        enterSubmit(event.target.value, userId);
         setInputMessage("");
       }
     };
@@ -124,7 +144,7 @@ function App() {
         .getElementById("exampleFormControlInput3")
         .removeEventListener("keydown", keyDownHandler);
     };
-  }, []);
+  }, [userId]);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -172,7 +192,7 @@ function App() {
 
   return (
     <div>
-      <section class="gradient-custom">
+      <section className="gradient-custom">
         <div className="container py-5" style={{ height: "100vh" }}>
           <div className="row d-flex justify-content-center">
             <div className="col-md-8 col-lg-6 col-xl-4">
