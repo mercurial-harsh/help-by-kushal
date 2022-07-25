@@ -8,7 +8,8 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json ./
 COPY package-lock.json ./
 RUN npm i
+RUN npm i -g serve
 # add app
 COPY . ./
 # start app
-CMD ["npm", "start"]
+CMD ["serve", "-s", "build", "-l", "3000"]
