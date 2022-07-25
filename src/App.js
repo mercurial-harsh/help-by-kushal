@@ -18,6 +18,7 @@ function App() {
   const [listen, setListen] = useState(false);
   // const [chatMessages, setChatMessages] = useState([]);
   const [timer, setTimer] = useState(null);
+  const [visible, setVisible] = useState(false);
 
   const commands = [
     {
@@ -76,11 +77,11 @@ function App() {
 
   const [mount, setMount] = useState(false);
   useEffect(() => {
-    if (userId && !mount) {
+    if (userId && visible) {
       setMount(true);
       rasaAPI(userId, "Hi");
     }
-  }, [userId, mount]);
+  }, [userId, visible]);
 
   const voiceSubmit = (transcript) => {
     const request_temp = {
@@ -108,8 +109,7 @@ function App() {
     const keyDownHandler = (event) => {
       if (event.key === "Enter") {
         // 👇️ call submit function here
-        setInputMessage(event.target.value);
-        handleSubmit(event);
+        voiceSubmit(event.target.value);
       }
     };
 
@@ -192,6 +192,7 @@ function App() {
                 role="button"
                 aria-expanded="false"
                 aria-controls="collapseExample"
+                onClick={()=>setVisible(true)}
               >
                 <div className="d-flex justify-content-between align-items-center">
                   <span>Click to Talk to VAISHALLY</span>
