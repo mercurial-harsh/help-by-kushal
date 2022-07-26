@@ -43,6 +43,16 @@ function App() {
       isFuzzyMatch: true,
       matchInterim: true,
     },
+    {
+      command: "stop",
+      callback: (command)=>{
+        console.log("speak stop triggered");
+        speechSynthesis.cancel();
+      },
+      fuzzyMatchingThreshold:0.6,
+      isFuzzyMatch: true,
+      matchInterim: true,
+    }
   ];
 
   const { transcript, listening, finalTranscript, resetTranscript } =
@@ -120,7 +130,7 @@ function App() {
     if (message !== "") {
       setChat((prevState) => [...prevState, request_temp]);
       setbotTyping(true);
-      console.log(userId);
+      
       rasaAPI(userId, message);
       setListen(false);
       // resetTranscript();
