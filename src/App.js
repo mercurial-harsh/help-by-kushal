@@ -170,7 +170,7 @@ function App() {
 
   const rasaAPI = async function handleClick(USER_ID, inputMessage) {
     //chatData.push({sender : "user", sender_id : name, msg : msg});
-    await fetch("http://34.86.33.139/webhooks/rest/webhook", {
+    await fetch("https://v2.ravitomar.in/webhooks/rest/webhook", {
       method: "POST",
       headers: {
         Accept: "application/json",
