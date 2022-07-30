@@ -19,9 +19,11 @@ function Botcard({ message, handleSubmit }) {
     if (!stateSet) {
       if (message.response.length > 0) {
         message.response.forEach((data) => {
+          var msg = new SpeechSynthesisUtterance();
           if (data.text) {
             const textmsg = data.text;
             if (!textmsg.startsWith("You may select any product")) {
+              var msg = new SpeechSynthesisUtterance();
               speak(textmsg);
             }
           }
