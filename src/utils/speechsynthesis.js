@@ -37,7 +37,7 @@ export const chooseVoice = async (voicepref) => {
 
     //   ("Microsoft Zira - English (United States)" || "Google UK English Female" || "Veena" || "Samantha" )
   );
-
+  console.log(voices);
   return new Promise((resolve) => {
     resolve(voices[0]);
   });
