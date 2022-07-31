@@ -26,7 +26,7 @@ function Botcard({ message, handleSubmit }) {
             const textmsg = data.text;
             if (!textmsg.startsWith("You may select any product")) {
               artyom.say(textmsg);
-              speak(textmsg);
+              //
             }
           }
           if (data.buttons) {
@@ -38,7 +38,7 @@ function Botcard({ message, handleSubmit }) {
               ' items or, you can also say first, second, third. . .       Say, "START", to Speak, or "CLEAR", to retry.';
 
             artyom.say(textmsg);
-            speak(textmsg);
+            //speak(textmsg);
           }
         });
         setStateSet(true);
