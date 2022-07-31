@@ -9,6 +9,9 @@ import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDiss
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
 import MediaCard from "./Mediacard";
 import { speak } from "../utils/speechsynthesis";
+import Artyom from "artyom.js";
+
+const artyom = new Artyom();
 
 function Botcard({ message, handleSubmit }) {
   const [stateSet, setStateSet] = useState(false);
@@ -22,12 +25,8 @@ function Botcard({ message, handleSubmit }) {
           if (data.text) {
             const textmsg = data.text;
             if (!textmsg.startsWith("You may select any product")) {
-              speechSynthesis.speak(
-                new SpeechSynthesisUtterance(
-                  "Currently it is 3 o'clock in the afternoon."
-                )
-              );
-              //speak(textmsg);
+              artyom.say(textmsg);
+              speak(textmsg);
             }
           }
           if (data.buttons) {
@@ -38,6 +37,7 @@ function Botcard({ message, handleSubmit }) {
               data.buttons.length +
               ' items or, you can also say first, second, third. . .       Say, "START", to Speak, or "CLEAR", to retry.';
 
+            artyom.say(textmsg);
             speak(textmsg);
           }
         });
