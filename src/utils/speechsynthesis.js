@@ -9,7 +9,7 @@ export const speak = async (text) => {
       "Microsoft Zira - English (United States)"
     );
   } else {
-    message.voice = await chooseVoice("Veena");
+    message.voice = await chooseVoice("Samantha");
   }
 
   //   ("Microsoft Zira - English (United States)" || "Google UK English Female" || "Veena" || "Samantha" )
