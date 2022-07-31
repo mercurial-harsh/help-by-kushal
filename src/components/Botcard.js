@@ -25,14 +25,20 @@ function Botcard({ message, handleSubmit }) {
           if (data.text) {
             const textmsg = data.text;
             if (!textmsg.startsWith("You may select any product")) {
-              artyom.say(textmsg, {
-                onStart: function () {
-                  console.log("The text has been started.");
-                },
-                onEnd: function () {
-                  console.log("The text has been finished.");
-                },
-              });
+              if(artyom.speechSupported()){
+                console.log("yes");
+                artyom.say(textmsg, {
+                  onStart: function () {
+                    console.log("The text has been started.");
+                  },
+                  onEnd: function () {
+                    console.log("The text has been finished.");
+                  },
+                });
+              }else{
+                console.log("no");
+              }
+             
               //
             }
           }
