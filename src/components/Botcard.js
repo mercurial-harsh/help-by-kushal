@@ -22,9 +22,12 @@ function Botcard({ message, handleSubmit }) {
           if (data.text) {
             const textmsg = data.text;
             if (!textmsg.startsWith("You may select any product")) {
-              var msg = new SpeechSynthesisUtterance("");
-              msg.speak(textmsg);
-              speak(textmsg);
+              speechSynthesis.speak(
+                new SpeechSynthesisUtterance(
+                  "Currently it is 3 o'clock in the afternoon."
+                )
+              );
+              //speak(textmsg);
             }
           }
           if (data.buttons) {
