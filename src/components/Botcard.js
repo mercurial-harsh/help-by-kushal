@@ -9,7 +9,7 @@ import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDiss
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
 import MediaCard from "./Mediacard";
 import { speak } from "../utils/speechsynthesis";
-import Artyom from "artyom.js";
+import Artyom from "./artyom";
 
 const artyom = new Artyom();
 
