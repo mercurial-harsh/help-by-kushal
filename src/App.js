@@ -23,7 +23,6 @@ function App() {
       });
   }
 
-  
   const [voicemode, setVoicemode] = useState(1);
   const [userId, setUserId] = useState("");
   const [chat, setChat] = useState([]);
@@ -328,15 +327,16 @@ function App() {
                         onClick={() => {
                           setVoicemode(voicemode + 1);
                           if (voicemode % 2 === 1) {
-                            speak("voice mode activated");getLocalStream();
+                            speak("voice mode activated");
                           } else if (voicemode % 2 === 0) {
                             speechSynthesis.cancel();
                           }
                         }}
                       >
                         <p id="mytext">
+                          click to
                           {voicemode % 2 === 1 ? "activate" : "deactivate"}{" "}
-                          voice mode
+                          voice mode {navigator.userAgent}
                         </p>
                       </i>
                     </a>
