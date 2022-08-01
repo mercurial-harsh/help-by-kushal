@@ -23,7 +23,7 @@ function App() {
       });
   }
 
-  getLocalStream();
+  
   const [voicemode, setVoicemode] = useState(1);
   const [userId, setUserId] = useState("");
   const [chat, setChat] = useState([]);
@@ -328,7 +328,7 @@ function App() {
                         onClick={() => {
                           setVoicemode(voicemode + 1);
                           if (voicemode % 2 === 1) {
-                            speak("voice mode activated");
+                            speak("voice mode activated");getLocalStream();
                           } else if (voicemode % 2 === 0) {
                             speechSynthesis.cancel();
                           }
