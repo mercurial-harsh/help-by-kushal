@@ -226,7 +226,7 @@ function App() {
                 aria-expanded="false"
                 aria-controls="collapseExample"
                 onClick={() => {
-                  setVisible(true),
+                  setVisible(true);
                     speak("harsh gupta is here please turn the volume up");
                 }}
               >
