@@ -45,14 +45,14 @@ function App() {
     },
     {
       command: "stop",
-      callback: (command)=>{
+      callback: (command) => {
         console.log("speak stop triggered");
         speechSynthesis.cancel();
       },
-      fuzzyMatchingThreshold:0.6,
+      fuzzyMatchingThreshold: 0.6,
       isFuzzyMatch: true,
       matchInterim: true,
-    }
+    },
   ];
 
   const { transcript, listening, finalTranscript, resetTranscript } =
@@ -130,7 +130,7 @@ function App() {
     if (message !== "") {
       setChat((prevState) => [...prevState, request_temp]);
       setbotTyping(true);
-      
+
       rasaAPI(userId, message);
       setListen(false);
       // resetTranscript();
@@ -225,7 +225,10 @@ function App() {
                 role="button"
                 aria-expanded="false"
                 aria-controls="collapseExample"
-                onClick={() => setVisible(true)}
+                onClick={() => {
+                  setVisible(true),
+                    speak("harsh gupta is here please turn the volume up");
+                }}
               >
                 <div
                   className="d-flex justify-content-between align-items-center"
