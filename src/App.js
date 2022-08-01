@@ -10,6 +10,7 @@ import SpeechRecognition, {
 import { speak, chooseVoice } from "./utils/speechsynthesis";
 
 function App() {
+  const [voicemode, setVoicemode] = useState(1);
   const [userId, setUserId] = useState("");
   const [chat, setChat] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
@@ -61,8 +62,12 @@ function App() {
     });
 
   useEffect(() => {
-    SpeechRecognition.startListening({ continuous: true });
-  }, []);
+    if (voicemode % 2 === 0) {
+      SpeechRecognition.startListening({ continuous: true });
+    } else if (voicemode % 2 === 1) {
+      SpeechRecognition.abortListening();
+    }
+  }, [voicemode]);
 
   useEffect(() => {
     if (!listen) return;
@@ -227,7 +232,7 @@ function App() {
                 aria-controls="collapseExample"
                 onClick={() => {
                   setVisible(true);
-                    speak("harsh gupta is here please turn the volume up");
+                  speak("harsh gupta is here please turn the volume up");
                 }}
               >
                 <div
@@ -268,6 +273,7 @@ function App() {
                             (user.senderType === "bot" ? (
                               <Botcard
                                 message={user.msg}
+                                voicemode={voicemode}
                                 handleSubmit={handleSubmit}
                               ></Botcard>
                             ) : (
@@ -303,8 +309,22 @@ function App() {
                     <a className="ms-1 link-info" href="#!">
                       <i
                         className="fas fa-microphone"
-                        style={{ color: "red" }}
-                      ></i>
+                        style={{ color: voicemode % 2 === 1 ? "red" : "green" }}
+                        id="mytooltip"
+                        onClick={() => {
+                          setVoicemode(voicemode + 1);
+                          if (voicemode % 2 === 1) {
+                            speak("voice mode activated");
+                          } else if (voicemode % 2 === 0) {
+                            speechSynthesis.cancel();
+                          }
+                        }}
+                      >
+                        <p id="mytext">
+                          {voicemode % 2 === 1 ? "activate" : "deactivate"}{" "}
+                          voice mode
+                        </p>
+                      </i>
                     </a>
                     <a className="ms-3 link-info" href="#!">
                       <i

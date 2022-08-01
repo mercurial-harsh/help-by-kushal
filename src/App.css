@@ -40,3 +40,18 @@
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     background: linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5))
   }
+
+  #mytooltip #mytext{
+    visibility: hidden;
+    width: 100px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 3px;
+    padding: 10px 0;
+    position: absolute;
+    z-index: 1;
+ }
+ #mytooltip:hover #mytext{
+    visibility: visible;
+ }

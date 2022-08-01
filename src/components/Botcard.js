@@ -9,11 +9,9 @@ import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDiss
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
 import MediaCard from "./Mediacard";
 import { speak } from "../utils/speechsynthesis";
-import Artyom from "./artyom";
 
-const artyom = new Artyom();
 
-function Botcard({ message, handleSubmit }) {
+function Botcard({ message, handleSubmit,voicemode }) {
   const [stateSet, setStateSet] = useState(false);
   const [messageAlert, setMessageAlert] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
@@ -24,22 +22,8 @@ function Botcard({ message, handleSubmit }) {
         message.response.forEach((data) => {
           if (data.text) {
             const textmsg = data.text;
-            if (!textmsg.startsWith("You may select any product")) {
-              if(artyom.speechSupported()){
-                console.log("yes");
-                artyom.say(textmsg, {
-                  onStart: function () {
-                    console.log("The text has been started.");
-                  },
-                  onEnd: function () {
-                    console.log("The text has been finished.");
-                  },
-                });
-              }else{
-                console.log("no");
-              }
-             
-              //
+            if ((!textmsg.startsWith("You may select any product")) && (voicemode%2===0)) {
+              speak(textmsg);
             }
           }
           if (data.buttons) {
@@ -49,9 +33,10 @@ function Botcard({ message, handleSubmit }) {
               "please click to select from the list of these " +
               data.buttons.length +
               ' items or, you can also say first, second, third. . .       Say, "START", to Speak, or "CLEAR", to retry.';
-
-            artyom.say(textmsg);
-            //speak(textmsg);
+            if(voicemode%2===0){
+              speak(textmsg);
+            }
+            
           }
         });
         setStateSet(true);
@@ -59,7 +44,7 @@ function Botcard({ message, handleSubmit }) {
         setMessageAlert(true);
       }
     }
-  }, [message, stateSet]);
+  }, [message, stateSet,voicemode]);
 
   const handleButton = (e) => {
     setIsDisable(true);
