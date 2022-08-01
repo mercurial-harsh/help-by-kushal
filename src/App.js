@@ -10,6 +10,20 @@ import SpeechRecognition, {
 import { speak, chooseVoice } from "./utils/speechsynthesis";
 
 function App() {
+  function getLocalStream() {
+    navigator.mediaDevices
+      .getUserMedia({ video: false, audio: true })
+      .then((stream) => {
+        window.localStream = stream;
+        window.localAudio.srcObject = stream;
+        window.localAudio.autoplay = true;
+      })
+      .catch((err) => {
+        console.error(`you got an error: ${err}`);
+      });
+  }
+
+  getLocalStream();
   const [voicemode, setVoicemode] = useState(1);
   const [userId, setUserId] = useState("");
   const [chat, setChat] = useState([]);
