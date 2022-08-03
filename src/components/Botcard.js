@@ -10,6 +10,7 @@ import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfi
 import MediaCard from "./Mediacard";
 import { speak } from "../utils/speechsynthesis";
 
+
 function Botcard({ message, handleSubmit, voicemode, setlistencallback }) {
   const [stateSet, setStateSet] = useState(false);
   const [messageAlert, setMessageAlert] = useState(false);
@@ -72,7 +73,7 @@ function Botcard({ message, handleSubmit, voicemode, setlistencallback }) {
             {text && (
               <div className="d-flex flex-row justify-content-start mt-3">
                 <img
-                  src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
+                  src="./resonancelogo.jpeg"
                   alt="avatar 1"
                   style={{ width: "45px", height: "100%" }}
                 ></img>
@@ -93,7 +94,7 @@ function Botcard({ message, handleSubmit, voicemode, setlistencallback }) {
             {image && (
               <div className="d-flex flex-row justify-content-start mt-3">
                 <img
-                  src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
+                  src="./resonancelogo.jpeg"
                   alt="avatar 1"
                   style={{ width: "45px", height: "100%" }}
                 ></img>
@@ -112,7 +113,7 @@ function Botcard({ message, handleSubmit, voicemode, setlistencallback }) {
             {buttons?.length > 0 && (
               <div className="d-flex flex-row justify-content-start mt-3">
                 <img
-                  src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp"
+                  src="./resonancelogo.jpeg"
                   alt="avatar 1"
                   style={{ width: "45px", height: "100%" }}
                 ></img>

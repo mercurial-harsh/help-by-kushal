@@ -57,6 +57,18 @@ function App() {
       matchInterim: true,
     },
     {
+      command: "Vaishali",
+      callback: (command) => {
+        console.log("Start recognized");
+        setListen(true);
+        speechSynthesis.cancel();
+        resetTranscript();
+      },
+      fuzzyMatchingThreshold: 0.6,
+      isFuzzyMatch: true,
+      matchInterim: true,
+    },
+    {
       command: "clear",
       callback: (command) => {
         console.log("Clear triggered");
@@ -257,17 +269,7 @@ function App() {
           <div className="row d-flex justify-content-center">
             <div className="col-md-8 col-lg-6 col-xl-4">
               {/* <!-- Buttons trigger collapse --> */}
-              <a
-                className="btn btn-info btn-lg btn-block"
-                aria-expanded="false"
-              >
-                <div className="d-flex justify-content-between align-items-center">
-                  <span>
-                    Say <span style={{ color: "red" }}> "START" </span>to Speak,{" "}
-                    <span style={{ color: "red" }}> "CLEAR" </span> to Retry
-                  </span>
-                </div>
-              </a>
+
               <a
                 className="btn btn-info btn-lg btn-block"
                 data-mdb-toggle="collapse"
@@ -276,8 +278,10 @@ function App() {
                 aria-expanded="false"
                 aria-controls="collapseExample"
                 onClick={() => {
-                  setVisible(true);
-                  speak("harsh gupta is here please turn the volume up");
+                  if (visible === false) {
+                    speak("Vaishali is here please turn the volume up");
+                    setVisible(true);
+                  }
                 }}
               >
                 <div
@@ -290,8 +294,14 @@ function App() {
                       <span style={{ fontSize: "15px", color: "#200baa" }}>
                         Conversational AI
                       </span>{" "}
-                      (Click to Start)
+                      <br></br>
+                      <span>
+                        Say <span style={{ color: "red" }}> "START" </span>to
+                        Speak, <span style={{ color: "red" }}> "CLEAR" </span>{" "}
+                        to Retry
+                      </span>
                     </p>
+                    <span>(Click to Start)</span>
                   </span>
                   <i className="fas fa-chevron-down"></i>
                 </div>
@@ -360,13 +370,7 @@ function App() {
                         style={{ color: voicemode % 2 === 1 ? "red" : "green" }}
                         id="mytooltip"
                         onClick={() => setVoicemode(voicemode + 1)}
-                      >
-                        <p id="mytext">
-                          click to
-                          {voicemode % 2 === 1 ? "activate" : "deactivate"}{" "}
-                          voice mode
-                        </p>
-                      </i>
+                      ></i>
                     </a>
                     <a className="ms-3 link-info" href="#!">
                       <i
