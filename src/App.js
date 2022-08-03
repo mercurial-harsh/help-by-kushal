@@ -1,9 +1,9 @@
 import { LinearProgress } from "@mui/material";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import "./App.css";
 import Botcard from "./components/Botcard";
 import Usercard from "./components/Usercard";
-import uuidv4 from "./utils/utility";
+import uuidv4, { isEmptyObject } from "./utils/utility";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
@@ -83,27 +83,14 @@ function App() {
       commands,
     });
 
-  // useEffect(() => {
-  //   if (voicemode % 2 === 0) {
-  //     if (expectingconv === true) {
-        
-  //       // if (speechSynthesis.speaking === false) {
-  //       //   console.log(responseuse[responseuse.length - 1].custom.expecting);
-  //       //   if (responseuse[responseuse.length - 1].custom.expecting !== null) {
-  //       //     setListen(true);
-  //       //     resetTranscript();
-  //       //   }
-  //       //   setExpectingconv(false);
-  //       // }
-  //     }
-  //   }
-  // }, [responseuse, expectingconv, speechSynthesis.speaking]);
-
   useEffect(() => {
     if (voicemode % 2 === 0) {
+      speak("voice mode activated");
       SpeechRecognition.startListening({ continuous: true });
     } else if (voicemode % 2 === 1) {
+      console.log(voicemode);
       SpeechRecognition.abortListening();
+      speechSynthesis.cancel();
     }
   }, [voicemode]);
 
@@ -140,6 +127,24 @@ function App() {
       rasaAPI(userId, "Hi");
     }
   }, [userId, visible]);
+
+  const listenOnExpectingResponseCallback = useCallback(() => {
+    console.log(
+      "-------------listen callback called------------",
+      responseuse[responseuse.length - 1].custom.expecting,
+      expectingconv,
+      voicemode
+    );
+    if (
+      !isEmptyObject(responseuse[responseuse.length - 1]?.custom?.expecting) &&
+      expectingconv &&
+      voicemode % 2 === 0
+    ) {
+      setListen(true);
+      resetTranscript();
+    }
+    setExpectingconv(false);
+  }, [responseuse, expectingconv, voicemode]);
 
   const voiceSubmit = (transcript, userId) => {
     const request_temp = {
@@ -315,7 +320,9 @@ function App() {
                                 message={user.msg}
                                 voicemode={voicemode}
                                 handleSubmit={handleSubmit}
-                                setlistencallback={()=>{setListen(true);resetTranscript()}}
+                                setlistencallback={
+                                  listenOnExpectingResponseCallback
+                                }
                               ></Botcard>
                             ) : (
                               <Usercard message={user.msg} />
@@ -352,19 +359,12 @@ function App() {
                         className="fas fa-microphone"
                         style={{ color: voicemode % 2 === 1 ? "red" : "green" }}
                         id="mytooltip"
-                        onClick={() => {
-                          setVoicemode(voicemode + 1);
-                          if (voicemode % 2 === 1) {
-                            speak("voice mode activated");
-                          } else if (voicemode % 2 === 0) {
-                            speechSynthesis.cancel();
-                          }
-                        }}
+                        onClick={() => setVoicemode(voicemode + 1)}
                       >
                         <p id="mytext">
                           click to
                           {voicemode % 2 === 1 ? "activate" : "deactivate"}{" "}
-                          voice mode {navigator.userAgent}
+                          voice mode
                         </p>
                       </i>
                     </a>

@@ -6,6 +6,16 @@ function uuidv4() {
     ).toString(16)
   );
 }
+export const isEmptyObject = (objectToCheck) => {
+  if (
+    objectToCheck === null ||
+    objectToCheck === undefined ||
+    objectToCheck.length === 0
+  )
+    return true;
+  if (Array.isArray(objectToCheck)) return !objectToCheck.length;
+  if (typeof objectToCheck === "string") return !objectToCheck.trim().length;
+  return Object.keys(objectToCheck).length === 0;
+};
+
 export default uuidv4;
-
-

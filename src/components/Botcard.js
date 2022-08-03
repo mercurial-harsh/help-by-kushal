@@ -10,21 +10,29 @@ import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfi
 import MediaCard from "./Mediacard";
 import { speak } from "../utils/speechsynthesis";
 
-
-function Botcard({ message, handleSubmit,voicemode,setlistencallback }) {
+function Botcard({ message, handleSubmit, voicemode, setlistencallback }) {
   const [stateSet, setStateSet] = useState(false);
   const [messageAlert, setMessageAlert] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
-  let wholetext='';
+  let wholetext = "";
+  const [triggerListen, setTriggerListen] = useState(false);
 
   useEffect(() => {
+    if (triggerListen) {
+      setlistencallback();
+      setTriggerListen(false);
+    }
+  }, [triggerListen, setlistencallback]);
+
+  useEffect(() => {
+    console.log("=-----------BOTCARD--------------", stateSet, voicemode);
     if (!stateSet) {
       if (message.response.length > 0) {
         message.response.forEach((data) => {
           if (data.text) {
             const textmsg = data.text;
             if (!textmsg.startsWith("You may select any product")) {
-              wholetext=wholetext+" "+textmsg;
+              wholetext = wholetext + " " + textmsg;
             }
           }
           if (data.buttons) {
@@ -34,20 +42,19 @@ function Botcard({ message, handleSubmit,voicemode,setlistencallback }) {
               "please click to select from the list of these " +
               data.buttons.length +
               ' items or, you can also say first, second, third. . .       Say, "START", to Speak, or "CLEAR", to retry.';
-            
-              wholetext=wholetext+" "+textmsg;
-            
-            
+
+            wholetext = wholetext + " " + textmsg;
           }
         });
-        if(voicemode%2===0)
-        {speak(wholetext).then(()=>{setlistencallback();});}
+        if (voicemode % 2 === 0) {
+          speak(wholetext).then(() => setTriggerListen(true));
+        }
         setStateSet(true);
       } else {
         setMessageAlert(true);
       }
     }
-  }, [message, stateSet,voicemode,wholetext]);
+  }, [message, stateSet, voicemode, wholetext]);
 
   const handleButton = (e) => {
     setIsDisable(true);
