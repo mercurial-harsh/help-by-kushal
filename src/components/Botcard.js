@@ -11,10 +11,11 @@ import MediaCard from "./Mediacard";
 import { speak } from "../utils/speechsynthesis";
 
 
-function Botcard({ message, handleSubmit,voicemode }) {
+function Botcard({ message, handleSubmit,voicemode,setlistencallback }) {
   const [stateSet, setStateSet] = useState(false);
   const [messageAlert, setMessageAlert] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
+  let wholetext='';
 
   useEffect(() => {
     if (!stateSet) {
@@ -22,8 +23,8 @@ function Botcard({ message, handleSubmit,voicemode }) {
         message.response.forEach((data) => {
           if (data.text) {
             const textmsg = data.text;
-            if ((!textmsg.startsWith("You may select any product")) && (voicemode%2===0)) {
-              speak(textmsg);
+            if (!textmsg.startsWith("You may select any product")) {
+              wholetext=wholetext+" "+textmsg;
             }
           }
           if (data.buttons) {
@@ -33,18 +34,20 @@ function Botcard({ message, handleSubmit,voicemode }) {
               "please click to select from the list of these " +
               data.buttons.length +
               ' items or, you can also say first, second, third. . .       Say, "START", to Speak, or "CLEAR", to retry.';
-            if(voicemode%2===0){
-              speak(textmsg);
-            }
+            
+              wholetext=wholetext+" "+textmsg;
+            
             
           }
         });
+        if(voicemode%2===0)
+        {speak(wholetext).then(()=>{setlistencallback();});}
         setStateSet(true);
       } else {
         setMessageAlert(true);
       }
     }
-  }, [message, stateSet,voicemode]);
+  }, [message, stateSet,voicemode,wholetext]);
 
   const handleButton = (e) => {
     setIsDisable(true);

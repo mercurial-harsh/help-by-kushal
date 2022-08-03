@@ -33,6 +33,15 @@ function App() {
   // const [chatMessages, setChatMessages] = useState([]);
   const [timer, setTimer] = useState(null);
   const [visible, setVisible] = useState(false);
+  const [expectingconv, setExpectingconv] = useState(false);
+  const [responseuse, setResponseuse] = useState([]);
+
+  // const seeifspeaking = () => {
+  //   while (speechSynthesis.speaking) {
+  //     console.log("speking");
+  //   }
+  //   return false;
+  // };
 
   const commands = [
     {
@@ -73,6 +82,22 @@ function App() {
     useSpeechRecognition({
       commands,
     });
+
+  // useEffect(() => {
+  //   if (voicemode % 2 === 0) {
+  //     if (expectingconv === true) {
+        
+  //       // if (speechSynthesis.speaking === false) {
+  //       //   console.log(responseuse[responseuse.length - 1].custom.expecting);
+  //       //   if (responseuse[responseuse.length - 1].custom.expecting !== null) {
+  //       //     setListen(true);
+  //       //     resetTranscript();
+  //       //   }
+  //       //   setExpectingconv(false);
+  //       // }
+  //     }
+  //   }
+  // }, [responseuse, expectingconv, speechSynthesis.speaking]);
 
   useEffect(() => {
     if (voicemode % 2 === 0) {
@@ -211,6 +236,8 @@ function App() {
       .then((res) => res.json())
       .then((response) => {
         // Set bot response and toggle typing indicator
+        setExpectingconv(true);
+        setResponseuse(response);
         const response_temp = { senderType: "bot", msg: { response } };
         setbotTyping(false);
         setChat((prevState) => [...prevState, response_temp]);
@@ -288,6 +315,7 @@ function App() {
                                 message={user.msg}
                                 voicemode={voicemode}
                                 handleSubmit={handleSubmit}
+                                setlistencallback={()=>{setListen(true);resetTranscript()}}
                               ></Botcard>
                             ) : (
                               <Usercard message={user.msg} />

@@ -12,9 +12,15 @@ export const speak = async (text) => {
     message.voice = await chooseVoice("Samantha");
   }
 
+  
+
   //   ("Microsoft Zira - English (United States)" || "Google UK English Female" || "Veena" || "Samantha" )
   console.log(message.voice);
   speechSynthesis.speak(message);
+
+  return new Promise(resolve => {
+    message.onend = resolve;
+  });
 };
 
 const getVoices = () => {
